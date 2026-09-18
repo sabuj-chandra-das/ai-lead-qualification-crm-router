@@ -1,0 +1,1088 @@
+{
+  "name": "Lead Qualification & CRM Router",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "AI Lead Qualification Form",
+        "formDescription": "Tell us about your business and automation needs. Our team will review your requirements and get back to you.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "First Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Last Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Phone"
+            },
+            {
+              "fieldLabel": "Company",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Website"
+            },
+            {
+              "fieldLabel": "Job Title",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Industry",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "SaaS"
+                  },
+                  {
+                    "option": "E-commerce"
+                  },
+                  {
+                    "option": "Agency"
+                  },
+                  {
+                    "option": "Professional Services"
+                  },
+                  {
+                    "option": "Healthcare"
+                  },
+                  {
+                    "option": "Finance"
+                  },
+                  {
+                    "option": "Education"
+                  },
+                  {
+                    "option": "Real Estate"
+                  },
+                  {
+                    "option": "Other"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Company Size",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "1–10"
+                  },
+                  {
+                    "option": "11–50"
+                  },
+                  {
+                    "option": "51–200"
+                  },
+                  {
+                    "option": "201–500"
+                  },
+                  {
+                    "option": "500+"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What do you need?",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Budget",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Under $500"
+                  },
+                  {
+                    "option": "$500–$1,000"
+                  },
+                  {
+                    "option": "$1,000–$3,000"
+                  },
+                  {
+                    "option": "$3,000–$5,000"
+                  },
+                  {
+                    "option": "$5,000+"
+                  },
+                  {
+                    "option": "Not sure"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Timeline",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Immediate"
+                  },
+                  {
+                    "option": "Within 1 Month"
+                  },
+                  {
+                    "option": "1–3 Months"
+                  },
+                  {
+                    "option": "3–6 Months"
+                  },
+                  {
+                    "option": "6+ Months"
+                  },
+                  {
+                    "option": "Not sure"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Message",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Lead Source",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Website"
+                  },
+                  {
+                    "option": "Google"
+                  },
+                  {
+                    "option": "LinkedIn"
+                  },
+                  {
+                    "option": "Facebook"
+                  },
+                  {
+                    "option": "Referral"
+                  },
+                  {
+                    "option": "Freelance Platform"
+                  },
+                  {
+                    "option": "Other"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -736,
+        -32
+      ],
+      "id": "ecd49f04-84cb-495b-815b-6481473cf057",
+      "name": "On form submission",
+      "webhookId": "YOUR_WEBHOOKID"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a B2B sales qualification analyst for an AI automation agency.\n\nAnalyze the following lead.\n\nLead Information:\nName: {{ $json.lead.fullName }}\nEmail: {{ $json.lead.email }}\nCompany: {{ $json.lead.company }}\nWebsite: {{ $json.lead.website }}\nJob Title: {{ $json.lead.jobTitle }}\nIndustry: {{ $json.lead.industry }}\nCompany Size: {{ $json.lead.companySize }}\nNeed: {{ $json.lead.need }}\nBudget: {{ $json.lead.budget }}\nTimeline: {{ $json.lead.timeline }}\nMessage: {{ $json.lead.message }}\n\nIdeal Customer Profile:\n- Target company size: 10–500 employees\n- Target decision makers: Founder, CEO, COO, CTO, Head of Operations, or similar senior roles\n- Preferred budget: $1,000 or more\n- Strong preference for a clear AI or automation requirement\n- Stronger prospects have a specific business problem and a near-term implementation timeline\n\nDetermine:\n1. Whether the lead fits the ICP\n2. Buying intent\n3. Budget level\n4. Decision-making authority\n5. Strength of business need\n6. Project timeline\n7. Key pain points\n8. Recommended solution\n9. A concise qualification summary\n\nDo not invent information.\nIf something cannot be determined from the provided information, use \"Unknown\".",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -288,
+        -32
+      ],
+      "id": "e67f85b4-73e8-486e-944a-80e912bfd6e6",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -272,
+        192
+      ],
+      "id": "2bc6de24-3661-4305-8b7c-b3c0efcfb829",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"ideal_customer_fit\": {\n      \"type\": \"string\",\n      \"enum\": [\"Yes\", \"No\", \"Unknown\"]\n    },\n    \"buying_intent\": {\n      \"type\": \"string\",\n      \"enum\": [\"High\", \"Medium\", \"Low\", \"Unknown\"]\n    },\n    \"budget_level\": {\n      \"type\": \"string\",\n      \"enum\": [\"High\", \"Medium\", \"Low\", \"Unknown\"]\n    },\n    \"authority_level\": {\n      \"type\": \"string\",\n      \"enum\": [\"High\", \"Medium\", \"Low\", \"Unknown\"]\n    },\n    \"need_level\": {\n      \"type\": \"string\",\n      \"enum\": [\"High\", \"Medium\", \"Low\", \"Unknown\"]\n    },\n    \"timeline\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Immediate\",\n        \"Within 1 Month\",\n        \"1–3 Months\",\n        \"3–6 Months\",\n        \"6+ Months\",\n        \"Unknown\"\n      ]\n    },\n    \"pain_points\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"recommended_solution\": {\n      \"type\": \"string\"\n    },\n    \"qualification_summary\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"ideal_customer_fit\",\n    \"buying_intent\",\n    \"budget_level\",\n    \"authority_level\",\n    \"need_level\",\n    \"timeline\",\n    \"pain_points\",\n    \"recommended_solution\",\n    \"qualification_summary\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -144,
+        192
+      ],
+      "id": "97b626b0-e7b0-4869-8322-a6c8a51c24f5",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "const aiResult = $input.first().json;\n\n// Get original lead from Validate & Normalize node\nconst original = $('Validate & Normalize').first().json;\n\nreturn [\n  {\n    json: {\n      lead: original.lead,\n      submittedAt: original.submittedAt,\n      qualification: aiResult.output\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        -32
+      ],
+      "id": "4a15fe65-c059-4814-a853-597ed2ae16f2",
+      "name": "Merge Lead + AI Result"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\n// Helper\nconst clean = (value) => {\n  if (value === undefined || value === null) return '';\n  return String(value).trim();\n};\n\n// Read form fields\nconst firstName = clean(input[\"First Name\"]);\nconst lastName = clean(input[\"Last Name\"]);\nconst email = clean(input[\"Email\"]).toLowerCase();\nconst phone = clean(input[\"Phone\"]);\nconst company = clean(input[\"Company\"]);\nconst website = clean(input[\"Website\"]);\nconst jobTitle = clean(input[\"Job Title\"]);\nconst industry = clean(input[\"Industry\"]);\nconst companySize = clean(input[\"Company Size\"]);\nconst need = clean(input[\"What do you need?\"]);\nconst budget = clean(input[\"Budget\"]);\nconst timeline = clean(input[\"Timeline\"]);\nconst message = clean(input[\"Message\"]);\nconst leadSource = clean(input[\"Lead Source\"]);\n\n// Required-field validation\nconst errors = [];\n\nif (!firstName) errors.push(\"First Name is missing\");\nif (!lastName) errors.push(\"Last Name is missing\");\nif (!email) errors.push(\"Email is missing\");\nif (!company) errors.push(\"Company is missing\");\nif (!jobTitle) errors.push(\"Job Title is missing\");\nif (!industry) errors.push(\"Industry is missing\");\nif (!companySize) errors.push(\"Company Size is missing\");\nif (!need) errors.push(\"What do you need? is missing\");\nif (!budget) errors.push(\"Budget is missing\");\nif (!timeline) errors.push(\"Timeline is missing\");\nif (!message) errors.push(\"Message is missing\");\n\n// Basic email validation\nconst emailValid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n\nif (email && !emailValid) {\n  errors.push(\"Invalid email format\");\n}\n\n// Return normalized lead\nreturn [\n  {\n    json: {\n      lead: {\n        firstName,\n        lastName,\n        fullName: `${firstName} ${lastName}`.trim(),\n        email,\n        phone,\n        company,\n        website,\n        jobTitle,\n        industry,\n        companySize,\n        need,\n        budget,\n        timeline,\n        message,\n        leadSource\n      },\n      validation: {\n        valid: errors.length === 0,\n        errors\n      },\n      submittedAt: input.submittedAt || new Date().toISOString()\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -512,
+        -32
+      ],
+      "id": "b96dc433-5b71-4645-ba4f-7dfb8a7cdf4e",
+      "name": "Validate & Normalize"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\nconst q = input.qualification;\nconst lead = input.lead;\n\nlet score = 0;\n\n// ICP Fit — 20\nif (q.ideal_customer_fit === \"Yes\") {\n  score += 20;\n}\n\n// Authority — 15\nconst authorityPoints = {\n  High: 15,\n  Medium: 10,\n  Low: 5,\n  Unknown: 0\n};\nscore += authorityPoints[q.authority_level] || 0;\n\n// Budget — 20\nconst budgetPoints = {\n  High: 20,\n  Medium: 12,\n  Low: 5,\n  Unknown: 0\n};\nscore += budgetPoints[q.budget_level] || 0;\n\n// Need — 20\nconst needPoints = {\n  High: 20,\n  Medium: 12,\n  Low: 5,\n  Unknown: 0\n};\nscore += needPoints[q.need_level] || 0;\n\n// Timeline — 15\nconst timelinePoints = {\n  \"Immediate\": 15,\n  \"Within 1 Month\": 15,\n  \"1–3 Months\": 12,\n  \"3–6 Months\": 8,\n  \"6+ Months\": 3,\n  \"Unknown\": 0\n};\nscore += timelinePoints[q.timeline] || 0;\n\n// Problem clarity — 10\nif (Array.isArray(q.pain_points) && q.pain_points.length > 0) {\n  score += 10;\n}\n\n// Lead tier\nlet leadTier;\n\nif (score >= 80) {\n  leadTier = \"HOT\";\n} else if (score >= 50) {\n  leadTier = \"WARM\";\n} else {\n  leadTier = \"COLD\";\n}\n\nreturn [\n  {\n    json: {\n      lead,\n      qualification: q,\n      leadScore: score,\n      leadTier\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        -32
+      ],
+      "id": "7fb9cc82-66f9-4dc4-abbc-89f1a23e1365",
+      "name": "Calculate Lead Score"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.hubapi.com/crm/v3/objects/contacts/batch/upsert",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_HUBSPOT_PRIVATE_APP_TOKEN"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"inputs\": [\n    {\n      \"id\": \"{{ $json.lead.email }}\",\n      \"idProperty\": \"email\",\n      \"properties\": {\n        \"email\": \"{{ $json.lead.email }}\",\n        \"firstname\": \"{{ $json.lead.firstName }}\",\n        \"lastname\": \"{{ $json.lead.lastName }}\",\n        \"phone\": \"{{ $json.lead.phone }}\",\n        \"company\": \"{{ $json.lead.company }}\",\n        \"jobtitle\": \"{{ $json.lead.jobTitle }}\",\n        \"website\": \"{{ $json.lead.website }}\",\n        \"lead_score\": \"{{ $json.leadScore }}\",\n        \"lead_tier\": \"{{ $json.leadTier }}\",\n        \"icp_fit\": \"{{ $json.qualification.ideal_customer_fit }}\",\n        \"buying_intent\": \"{{ $json.qualification.buying_intent }}\",\n        \"budget_level\": \"{{ $json.qualification.budget_level }}\",\n        \"authority_level\": \"{{ $json.qualification.authority_level }}\",\n        \"need_level\": \"{{ $json.qualification.need_level }}\",\n        \"timeline\": \"{{ $json.qualification.timeline }}\",\"pain_points\": \"{{ $json.mappedPainPoints.join(';') }}\",\n        \"ai_qualification_summary\": \"{{ $json.qualification.qualification_summary }}\"\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        736,
+        -32
+      ],
+      "id": "559028db-a79d-4cd0-b18b-e4a362e05b75",
+      "name": "Create/Update HubSpot Contact"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\nconst aiPainPoints = input.qualification?.pain_points || [];\n\nconst painPointText = aiPainPoints.join(\" \").toLowerCase();\n\nconst mappedPainPoints = [];\n\nif (\n  painPointText.includes(\"manual\") ||\n  painPointText.includes(\"inquiries manually\")\n) {\n  mappedPainPoints.push(\"Manual Processes\");\n}\n\nif (\n  painPointText.includes(\"customer\") ||\n  painPointText.includes(\"support\") ||\n  painPointText.includes(\"inquiries\")\n) {\n  mappedPainPoints.push(\"Customer Support\");\n}\n\nif (\n  painPointText.includes(\"high volume\") ||\n  painPointText.includes(\"hundreds\") ||\n  painPointText.includes(\"large volume\")\n) {\n  mappedPainPoints.push(\"High Support Volume\");\n}\n\nif (\n  painPointText.includes(\"repetitive\") ||\n  painPointText.includes(\"repetitive tasks\")\n) {\n  mappedPainPoints.push(\"Repetitive Tasks\");\n}\n\nif (\n  painPointText.includes(\"lead\") ||\n  painPointText.includes(\"lead management\")\n) {\n  mappedPainPoints.push(\"Lead Management\");\n}\n\nif (\n  painPointText.includes(\"data entry\") ||\n  painPointText.includes(\"data-entry\")\n) {\n  mappedPainPoints.push(\"Data Entry\");\n}\n\nif (\n  painPointText.includes(\"workflow\") ||\n  painPointText.includes(\"inefficien\")\n) {\n  mappedPainPoints.push(\"Workflow Inefficiency\");\n}\n\n// Remove duplicates\nconst uniquePainPoints = [...new Set(mappedPainPoints)];\n\nif (uniquePainPoints.length === 0) {\n  uniquePainPoints.push(\"Other\");\n}\n\nreturn [\n  {\n    json: {\n      ...input,\n      mappedPainPoints: uniquePainPoints\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        -32
+      ],
+      "id": "ca3b3b3f-8618-4823-9230-b97af8fda7aa",
+      "name": "Map Pain Points"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "HOT_SaaS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a4044315-1e8d-4726-a07e-56840caae4db"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SaaS Sales Team"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ad510cc3-f2e6-484d-ac77-6f189780f44a",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "HOT_Ecommerce",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "E-commerce Sales Team"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9aa86cd0-2173-4737-b401-9c65144c8baa",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "HOT_Professional_Services",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "General Sales"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "065f6e6d-39ca-44ee-b5d5-d2d075017cdb",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "WARM",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Nurture"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f0d1be5e-fba1-4cb0-82b2-ee414ee447fd",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "COLD",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Marketing/Nurture"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "23444f90-d22c-45af-bf0e-76135b1b67fb",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "HOT_General",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "General Sales"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1360,
+        48
+      ],
+      "id": "74856362-3293-4ba6-a765-476b8bea94cd",
+      "name": "Route Lead"
+    },
+    {
+      "parameters": {
+        "jsCode": "const hubspot = $input.first().json;\nconst original = $('Map Pain Points').first().json;\n\nreturn [\n  {\n    json: {\n      ...original,\n      hubspot\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        -32
+      ],
+      "id": "7f81f70a-4f5b-4fee-aea4-16879cc72ee1",
+      "name": "Restore Lead Data"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\nconst tier = input.leadTier;\nconst industry = input.lead.industry;\n\nlet route;\n\nif (tier === \"HOT\" && industry === \"SaaS\") {\n  route = \"HOT_SaaS\";\n} else if (tier === \"HOT\" && industry === \"E-commerce\") {\n  route = \"HOT_Ecommerce\";\n} else if (tier === \"HOT\" && industry === \"Professional Services\") {\n  route = \"HOT_Professional_Services\";\n} else if (tier === \"HOT\") {\n  route = \"HOT_General\";\n} else if (tier === \"WARM\") {\n  route = \"WARM\";\n} else if (tier === \"COLD\") {\n  route = \"COLD\";\n} else {\n  route = \"UNROUTED\";\n}\n\nreturn [\n  {\n    json: {\n      ...input,\n      route\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        -32
+      ],
+      "id": "3c26e3b4-87d3-4d00-bb2a-085f116906b1",
+      "name": "Determine Route"
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_NOTIFICATION_EMAIL",
+        "subject": "=🔥 HOT E-commerce Lead — {{ $json.lead.fullName }} — Score {{ $json.leadScore }}",
+        "message": "=<h2>🔥 NEW HOT E-commerce LEAD</h2>\n\n<h3>Lead Information</h3>\n\n<p><strong>Name:</strong> {{ $json.lead.fullName }}</p>\n<p><strong>Email:</strong> <a href=\"mailto:{{ $json.lead.email }}\">{{ $json.lead.email }}</a></p>\n<p><strong>Phone:</strong> {{ $json.lead.phone }}</p>\n<p><strong>Company:</strong> {{ $json.lead.company }}</p>\n<p><strong>Website:</strong> {{ $json.lead.website }}</p>\n<p><strong>Industry:</strong> {{ $json.lead.industry }}</p>\n<p><strong>Company Size:</strong> {{ $json.lead.companySize }}</p>\n<p><strong>Job Title:</strong> {{ $json.lead.jobTitle }}</p>\n\n<h3>Qualification</h3>\n\n<p><strong>Lead Score:</strong> {{ $json.leadScore }} / 100</p>\n<p><strong>Lead Tier:</strong> {{ $json.leadTier }}</p>\n<p><strong>ICP Fit:</strong> {{ $json.qualification.ideal_customer_fit }}</p>\n<p><strong>Buying Intent:</strong> {{ $json.qualification.buying_intent }}</p>\n<p><strong>Budget Level:</strong> {{ $json.qualification.budget_level }}</p>\n<p><strong>Authority Level:</strong> {{ $json.qualification.authority_level }}</p>\n<p><strong>Need Level:</strong> {{ $json.qualification.need_level }}</p>\n<p><strong>Timeline:</strong> {{ $json.qualification.timeline }}</p>\n\n<h3>Pain Points</h3>\n\n<p>{{ $json.mappedPainPoints.join('<br>') }}</p>\n\n<h3>AI Qualification Summary</h3>\n\n<p>{{ $json.qualification.qualification_summary }}</p>\n\n<h3>Recommended Solution</h3>\n\n<p>{{ $json.qualification.recommended_solution }}</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1632,
+        -224
+      ],
+      "id": "95ccbb75-71f6-47d4-8bfa-1b9e01849a20",
+      "name": "Notify E-commerce Sales Team",
+      "webhookId": "YOUR_WEBHOOKID",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_NOTIFICATION_EMAIL",
+        "subject": "=🔥 HOT Professional Services Lead — {{ $json.lead.fullName }} — Score {{ $json.leadScore }}",
+        "message": "=<h2>🔥 NEW HOT Professional Services LEAD</h2>\n\n<h3>Lead Information</h3>\n\n<p><strong>Name:</strong> {{ $json.lead.fullName }}</p>\n<p><strong>Email:</strong> <a href=\"mailto:{{ $json.lead.email }}\">{{ $json.lead.email }}</a></p>\n<p><strong>Phone:</strong> {{ $json.lead.phone }}</p>\n<p><strong>Company:</strong> {{ $json.lead.company }}</p>\n<p><strong>Website:</strong> {{ $json.lead.website }}</p>\n<p><strong>Industry:</strong> {{ $json.lead.industry }}</p>\n<p><strong>Company Size:</strong> {{ $json.lead.companySize }}</p>\n<p><strong>Job Title:</strong> {{ $json.lead.jobTitle }}</p>\n\n<h3>Qualification</h3>\n\n<p><strong>Lead Score:</strong> {{ $json.leadScore }} / 100</p>\n<p><strong>Lead Tier:</strong> {{ $json.leadTier }}</p>\n<p><strong>ICP Fit:</strong> {{ $json.qualification.ideal_customer_fit }}</p>\n<p><strong>Buying Intent:</strong> {{ $json.qualification.buying_intent }}</p>\n<p><strong>Budget Level:</strong> {{ $json.qualification.budget_level }}</p>\n<p><strong>Authority Level:</strong> {{ $json.qualification.authority_level }}</p>\n<p><strong>Need Level:</strong> {{ $json.qualification.need_level }}</p>\n<p><strong>Timeline:</strong> {{ $json.qualification.timeline }}</p>\n\n<h3>Pain Points</h3>\n\n<p>{{ $json.mappedPainPoints.join('<br>') }}</p>\n\n<h3>AI Qualification Summary</h3>\n\n<p>{{ $json.qualification.qualification_summary }}</p>\n\n<h3>Recommended Solution</h3>\n\n<p>{{ $json.qualification.recommended_solution }}</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1728,
+        -80
+      ],
+      "id": "bf70a8ac-6cf4-4fc6-b34c-c3165e51653f",
+      "name": "Notify General Sales",
+      "webhookId": "YOUR_WEBHOOKID",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_NOTIFICATION_EMAIL",
+        "subject": "=🟡 WARM Lead — {{ $json.lead.fullName }} — Score {{ $json.leadScore }}",
+        "message": "=<h2>🟡 NEW WARM LEAD</h2>\n\n<h3>Lead Information</h3>\n\n<p><strong>Name:</strong> {{ $json.lead.fullName }}</p>\n<p><strong>Email:</strong> <a href=\"mailto:{{ $json.lead.email }}\">{{ $json.lead.email }}</a></p>\n<p><strong>Phone:</strong> {{ $json.lead.phone }}</p>\n<p><strong>Company:</strong> {{ $json.lead.company }}</p>\n<p><strong>Website:</strong> {{ $json.lead.website }}</p>\n<p><strong>Industry:</strong> {{ $json.lead.industry }}</p>\n<p><strong>Company Size:</strong> {{ $json.lead.companySize }}</p>\n<p><strong>Job Title:</strong> {{ $json.lead.jobTitle }}</p>\n\n<h3>Qualification</h3>\n\n<p><strong>Lead Score:</strong> {{ $json.leadScore }} / 100</p>\n<p><strong>Lead Tier:</strong> {{ $json.leadTier }}</p>\n<p><strong>ICP Fit:</strong> {{ $json.qualification.ideal_customer_fit }}</p>\n<p><strong>Buying Intent:</strong> {{ $json.qualification.buying_intent }}</p>\n<p><strong>Budget Level:</strong> {{ $json.qualification.budget_level }}</p>\n<p><strong>Authority Level:</strong> {{ $json.qualification.authority_level }}</p>\n<p><strong>Need Level:</strong> {{ $json.qualification.need_level }}</p>\n<p><strong>Timeline:</strong> {{ $json.qualification.timeline }}</p>\n\n<h3>Pain Points</h3>\n\n<p>{{ $json.mappedPainPoints.join('<br>') }}</p>\n\n<h3>AI Qualification Summary</h3>\n\n<p>{{ $json.qualification.qualification_summary }}</p>\n\n<h3>Recommended Solution</h3>\n\n<p>{{ $json.qualification.recommended_solution }}</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1632,
+        160
+      ],
+      "id": "ae2d31fb-c251-43be-9589-2a411497fd87",
+      "name": "Notify Nurture",
+      "webhookId": "YOUR_WEBHOOKID",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_NOTIFICATION_EMAIL",
+        "subject": "=🔵 COLD Lead — {{ $json.lead.fullName }} — Score {{ $json.leadScore }}",
+        "message": "=<h2>🔵 NEW COLD LEAD</h2>\n\n<h3>Lead Information</h3>\n\n<p><strong>Name:</strong> {{ $json.lead.fullName }}</p>\n<p><strong>Email:</strong> <a href=\"mailto:{{ $json.lead.email }}\">{{ $json.lead.email }}</a></p>\n<p><strong>Phone:</strong> {{ $json.lead.phone }}</p>\n<p><strong>Company:</strong> {{ $json.lead.company }}</p>\n<p><strong>Website:</strong> {{ $json.lead.website }}</p>\n<p><strong>Industry:</strong> {{ $json.lead.industry }}</p>\n<p><strong>Company Size:</strong> {{ $json.lead.companySize }}</p>\n<p><strong>Job Title:</strong> {{ $json.lead.jobTitle }}</p>\n\n<h3>Qualification</h3>\n\n<p><strong>Lead Score:</strong> {{ $json.leadScore }} / 100</p>\n<p><strong>Lead Tier:</strong> {{ $json.leadTier }}</p>\n<p><strong>ICP Fit:</strong> {{ $json.qualification.ideal_customer_fit }}</p>\n<p><strong>Buying Intent:</strong> {{ $json.qualification.buying_intent }}</p>\n<p><strong>Budget Level:</strong> {{ $json.qualification.budget_level }}</p>\n<p><strong>Authority Level:</strong> {{ $json.qualification.authority_level }}</p>\n<p><strong>Need Level:</strong> {{ $json.qualification.need_level }}</p>\n<p><strong>Timeline:</strong> {{ $json.qualification.timeline }}</p>\n\n<h3>Pain Points</h3>\n\n<p>{{ $json.mappedPainPoints.join('<br>') }}</p>\n\n<h3>AI Qualification Summary</h3>\n\n<p>{{ $json.qualification.qualification_summary }}</p>\n\n<h3>Recommended Solution</h3>\n\n<p>{{ $json.qualification.recommended_solution }}</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1632,
+        352
+      ],
+      "id": "08aa0035-20c6-473e-aaf9-8cb3bd14a348",
+      "name": "Notify Marketing Nurture",
+      "webhookId": "YOUR_WEBHOOKID",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1P-V5HvAcmynGl1dxXB_SNIhaFV_yElQrR-fX7105N0s",
+          "mode": "list",
+          "cachedResultName": "Lead Qualification CRM Router - Audit Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Processed At": "={{ new Date().toISOString() }}",
+            "First Name": "={{ $json.lead.firstName }}",
+            "Last Name": "={{ $json.lead.lastName }}",
+            "Email": "={{ $json.lead.email }}",
+            " Lead Score ": "={{ $json.leadScore }}",
+            " Lead Tier": "={{ $json.leadTier }}",
+            " Buying Intent": "={{ $json.qualification.buying_intent }}",
+            "Company Industry ": "={{ $json.lead.industry }}",
+            " Route": "={{ $json.route }}",
+            "ICP Fit": "={{ $json.qualification.ideal_customer_fit }}",
+            " Budget Level": "={{ $json.qualification.budget_level }}",
+            " Authority Level": "={{ $json.qualification.authority_level }}",
+            " Need Level": "={{ $json.qualification.need_level }}",
+            " Timeline": "={{ $json.qualification.timeline }}",
+            " Pain Points ": "={{ $json.mappedPainPoints.join(', ') }}",
+            "Qualification Summary": "={{ $json.qualification.qualification_summary }}",
+            "Company": "={{ $json.lead.company }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Processed At",
+              "displayName": "Processed At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company Industry ",
+              "displayName": "Company Industry ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Lead Score ",
+              "displayName": " Lead Score ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Lead Tier",
+              "displayName": " Lead Tier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Route",
+              "displayName": " Route",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ICP Fit",
+              "displayName": "ICP Fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Buying Intent",
+              "displayName": " Buying Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Budget Level",
+              "displayName": " Budget Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Authority Level",
+              "displayName": " Authority Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Need Level",
+              "displayName": " Need Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Timeline",
+              "displayName": " Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Pain Points ",
+              "displayName": " Pain Points ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Qualification Summary",
+              "displayName": "Qualification Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1248,
+        -352
+      ],
+      "id": "37957346-d71c-4a50-b099-95c9dec2c1aa",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_NOTIFICATION_EMAIL",
+        "subject": "=🔥 HOT SaaS Lead — {{ $json.lead.fullName }} — Score {{ $json.leadScore }}",
+        "message": "=<h2>🔥 NEW HOT SaaS LEAD</h2>\n\n<h3>Lead Information</h3>\n\n<p><strong>Name:</strong> {{ $json.lead.fullName }}</p>\n<p><strong>Email:</strong> <a href=\"mailto:{{ $json.lead.email }}\">{{ $json.lead.email }}</a></p>\n<p><strong>Phone:</strong> {{ $json.lead.phone }}</p>\n<p><strong>Company:</strong> {{ $json.lead.company }}</p>\n<p><strong>Website:</strong> {{ $json.lead.website }}</p>\n<p><strong>Industry:</strong> {{ $json.lead.industry }}</p>\n<p><strong>Company Size:</strong> {{ $json.lead.companySize }}</p>\n<p><strong>Job Title:</strong> {{ $json.lead.jobTitle }}</p>\n\n<h3>Qualification</h3>\n\n<p><strong>Lead Score:</strong> {{ $json.leadScore }} / 100</p>\n<p><strong>Lead Tier:</strong> {{ $json.leadTier }}</p>\n<p><strong>ICP Fit:</strong> {{ $json.qualification.ideal_customer_fit }}</p>\n<p><strong>Buying Intent:</strong> {{ $json.qualification.buying_intent }}</p>\n<p><strong>Budget Level:</strong> {{ $json.qualification.budget_level }}</p>\n<p><strong>Authority Level:</strong> {{ $json.qualification.authority_level }}</p>\n<p><strong>Need Level:</strong> {{ $json.qualification.need_level }}</p>\n<p><strong>Timeline:</strong> {{ $json.qualification.timeline }}</p>\n\n<h3>Pain Points</h3>\n\n<p>{{ $json.mappedPainPoints.join('<br>') }}</p>\n\n<h3>AI Qualification Summary</h3>\n\n<p>{{ $json.qualification.qualification_summary }}</p>\n\n<h3>Recommended Solution</h3>\n\n<p>{{ $json.qualification.recommended_solution }}</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1632,
+        -416
+      ],
+      "id": "fac577b5-3c27-4e9d-9cf5-28e533ad9ee9",
+      "name": "Notify Saas team",
+      "webhookId": "YOUR_WEBHOOKID",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Validate & Normalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Merge Lead + AI Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Lead + AI Result": {
+      "main": [
+        [
+          {
+            "node": "Calculate Lead Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate & Normalize": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Lead Score": {
+      "main": [
+        [
+          {
+            "node": "Map Pain Points",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Pain Points": {
+      "main": [
+        [
+          {
+            "node": "Create/Update HubSpot Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create/Update HubSpot Contact": {
+      "main": [
+        [
+          {
+            "node": "Restore Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Determine Route",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Determine Route": {
+      "main": [
+        [
+          {
+            "node": "Route Lead",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Lead": {
+      "main": [
+        [
+          {
+            "node": "Notify Saas team",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify E-commerce Sales Team",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify General Sales",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Nurture",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Marketing Nurture",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify General Sales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1,
+    "saveDataErrorExecution": "all",
+    "saveManualExecutions": true
+  },
+  "versionId": "YOUR_VERSIONID",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "YOUR_INSTANCEID"
+  },
+  "nodeGroups": [],
+  "id": "3qPqMK74LsTQ3z73",
+  "tags": []
+}
